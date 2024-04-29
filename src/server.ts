@@ -45,14 +45,15 @@ app.listen(PORT, async () => {
         const player1 = data[1]
         const targetTimestamp = data[2]
 
+        console.log("New bet created!");
         console.log("betId", betId.toString());
         console.log("player1", player1);
         console.log("targetTimestamp", targetTimestamp.toString());
+        console.log("");
         
         scheduleBetCompletion(betId, targetTimestamp, contract)
 
     })
-
 
     // const tx = await contract.createBet(ethers.utils.parseUnits("0.00000001", "ether"), true, BigInt(Math.floor(Date.now() / 1000) + 20), {
     //     value: ethers.utils.parseEther("0.00000001") // Sending 0.1 ETH as an example
@@ -63,13 +64,3 @@ app.listen(PORT, async () => {
 
 });
 
-// console.log("Current block number:", await provider.getBalance('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'));
-
-
-// async function createBet(targetPrice: bigint, isHigherChosen: boolean, targetTimestamp: bigint) {
-//     const tx = await contract.createBet(targetPrice, isHigherChosen, targetTimestamp, {
-//         value: ethers.parseEther("0.1") // Sending 0.1 ETH as an example
-//     });
-//     await tx.wait(); // Wait for the transaction to be mined
-//     console.log(`Transaction successful with hash: ${tx.hash}`);
-// }

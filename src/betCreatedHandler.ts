@@ -6,19 +6,10 @@ type BetDetails = {
     isCompleted: boolean;
 }
 
-const duelAddress = '0x2cbD72063405738b7c5f8e2830b31d0e8532DAb5'
-const scheduledBets: Map<bigint, BetDetails> = new Map()
-
-
 export function scheduleBetCompletion(betId: bigint, targetTimestamp: bigint, duelContract: ethers.Contract) {
     const delay = Number(targetTimestamp) * 1000 - Date.now();
-    console.log("delay:");
-    console.log(delay);
-    console.log("times:");
-    console.log(Number(targetTimestamp)*1000);
-    console.log(Date.now());
 
-    saveScheduledBetsToFile(scheduledBets, 'scheduledBets.json');
+    const scheduledBets = loadScheduledBetsFromFile('scheduledBets.json');
 
     if (delay > 0) {
         console.log(`Bet finished scheduled to be called in ${delay/1000} seconds`);
@@ -56,10 +47,10 @@ export async function rescheduleBets(duelContract: ethers.Contract) {
         throw new Error('Contract not initialized');
     }
 
-    const _scheduledBets = loadScheduledBetsFromFile('scheduledBets.json');
+    const scheduledBets = loadScheduledBetsFromFile('scheduledBets.json');
 
-    if (_scheduledBets) {
-        _scheduledBets.forEach(async (betDetails, betId) => {
+    if (scheduledBets) {
+        scheduledBets.forEach(async (betDetails, betId) => {
             if (!betDetails.isCompleted) {
                 // asynchrously schedule the bet completion
                 scheduleBetCompletion(betId, betDetails.targetTimestamp, duelContract);
