@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 import { ethers } from 'ethers';
 import { CONTRACTADDRESS, CONTRACTABI, BETCREATEDABI } from './constants';
-import { scheduleBetCompletion } from './betCreatedHandler';
+import { scheduleBetCompletion, rescheduleBets } from './betCreatedHandler';
 
 dotenv.config();
 const app = express();
@@ -24,6 +24,8 @@ app.get('/', (req: Request, res: Response) => {
 
 
 app.listen(PORT, async () => {
+    rescheduleBets(contract);
+
     console.log('Listening on port', PORT);
 
     const filter = {
@@ -52,12 +54,12 @@ app.listen(PORT, async () => {
     })
 
 
-    const tx = await contract.createBet(ethers.utils.parseUnits("0.00000001", "ether"), true, BigInt(Math.floor(Date.now() / 1000) + 20), {
-        value: ethers.utils.parseEther("0.00000001") // Sending 0.1 ETH as an example
-    });
+    // const tx = await contract.createBet(ethers.utils.parseUnits("0.00000001", "ether"), true, BigInt(Math.floor(Date.now() / 1000) + 20), {
+    //     value: ethers.utils.parseEther("0.00000001") // Sending 0.1 ETH as an example
+    // });
 
-    await tx.wait(); // Wait for the transaction to be mined
-    console.log(`Transaction successful with hash: ${tx.hash}`);
+    // await tx.wait(); // Wait for the transaction to be mined
+    // console.log(`Transaction successful with hash: ${tx.hash}`);
 
 });
 
