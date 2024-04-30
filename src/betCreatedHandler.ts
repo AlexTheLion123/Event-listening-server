@@ -17,7 +17,7 @@ export function scheduleBetCompletion(betId: bigint, targetTimestamp: bigint, du
         setTimeout(async () => {
             try {
                 console.log("trying to finish bet with id: ", betId.toString())
-                const tx = await duelContract.finishBet(betId, {gasLimit: 5000000} ); // TODO get price from orcale
+                const tx = await duelContract.finishBet(betId); // TODO get price from orcale
                 await tx.wait();
                 console.log(`Bet finished successfully: betId=${betId.toString()}`);
 
